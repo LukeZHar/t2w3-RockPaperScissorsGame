@@ -29,6 +29,8 @@ modeSelect.addEventListener('change', () => {
 
 // Start game and set up the selected mode
 startGameButton.addEventListener('click', () => {
+    // resets the values
+    resetGame();
     if (modeSelect.value === 'best of') {
         maxRounds = parseInt(roundsInput.value);
         if (isNaN(maxRounds) || maxRounds < 1) {
@@ -78,11 +80,12 @@ function playGame(userChoice) {
     if (maxRounds && rounds >= maxRounds) {
         if (userScore === computerScore) {
             resultDiv.textContent = "Game Over! It's a tie!";
-            return;
+            
         } else {
             resultDiv.textContent = `Game over! ${userScore > computerScore ? 'You win!' : 'Computer wins!'}`;
-            return;
+            
         }
+        return;
     }
 
     // Display the results of the play
@@ -97,9 +100,12 @@ function playGame(userChoice) {
     if (maxRounds && rounds >= maxRounds) {
         if (userScore === computerScore) {
             const finalResult = "Play again to determine the overall winner!";
+            resultDiv.textContent += `Game Over! ${finalResult}`;
+            return;
         } else {
             const finalResult = userScore > computerScore ? "You are the overall winner!" : "Computer is the overall winner!";
-            resultDiv.textContent += ` ${finalResult}`;
+            resultDiv.textContent += `Game Over! ${finalResult}`;
+            return;
         }
     }
 }
@@ -110,3 +116,10 @@ paperButton.addEventListener('click', () => playGame('paper'));
 scissorsButton.addEventListener('click', () => playGame('scissors'));
 
 // Reset the game
+function resetGame() {
+    userScore = 0;
+    computerScore = 0;
+    rounds = 0;
+    scoreDiv.textContent = `Your score: ${userScore} | Computer score: ${computerScore}`;
+    resultDiv.textContent = 'Game reset';
+}
